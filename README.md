@@ -2,7 +2,7 @@
 Performance comparison of various weight and bias initializers using MNIST dataset
 
 ### Network architecture
-* hidden layers: Fully-connected layer (256 nodes, respectively) with ReLU
+* hidden layers: Two fully-connected layer (256 nodes, respectively) with ReLU
 * output layer: Fully-connected layer (10 nodes = # of class for MNIST)
 * Batch normalization is used for hidden layers
 ### Used initializers
