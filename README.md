@@ -10,12 +10,13 @@ Performance comparison of various weight and bias initializers using MNIST datas
 * Bias initializer: Constant (zero), Normal initializer
 ## Results
 Training accuracies of classifying MNIST data are compared.
+* Loss values are plotted using [Tensorboard in PyTorch](https://github.com/yunjey/pytorch-tutorial/tree/master/tutorials/04-utils/tensorboard).
 <table align='center'>
 <tr align='center'>
 </tr>
 <tr>
-<td><img src = 'results/initializer_comparison.png'>
-<td><img src = 'results/initializer_comparison_zoom.png'>
+<td><img src = 'results/initializer_comparison_tb.png'>
+<td><img src = 'results/initializer_comparison_zoom_tb.png'>
 </tr>
 </table>
 

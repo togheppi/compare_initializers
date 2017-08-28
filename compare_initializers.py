@@ -6,13 +6,13 @@ import torchvision.transforms as transforms
 import numpy as np
 import matplotlib.pyplot as plt
 import os
-import pandas as pd
+from logger import Logger
 
 # Parameters
 learning_rate = 0.001
 batch_size = 100
 num_epochs = 15
-data_dir = '../Data/MNIST_data/'
+data_dir = '../../Data/MNIST_data/'
 save_dir = 'results/'
 
 # MNIST dataset
@@ -137,6 +137,22 @@ model_wh_bn = MLP(weight_init='he', bias_init='normal').cuda()
 # Training
 print('Learning started. It takes sometime.')
 
+# Set the loggers
+init_names = ['normal_zero', 'normal_normal', 'trunc_normal_zero', 'trunc_normal_normal',
+              'xavier_zero', 'xavier_normal', 'He_zero', 'He_normal']
+
+loggers = []
+for init_name in init_names:
+    log_dir = save_dir + init_name
+    if not os.path.exists(log_dir):
+        os.mkdir(log_dir)
+    logger = Logger(log_dir)
+    loggers.append(logger)
+
+step = 0
+
+
+
 avg_accuracy1 = []
 avg_accuracy2 = []
 avg_accuracy3 = []
@@ -180,6 +196,16 @@ for epoch in range(num_epochs):
         accuracy7 = model_wh_bc.get_accuracy(x_, y_)
         accuracy8 = model_wh_bn.get_accuracy(x_, y_)
 
+        accuracies = []
+        accuracies.append(accuracy1)
+        accuracies.append(accuracy2)
+        accuracies.append(accuracy3)
+        accuracies.append(accuracy4)
+        accuracies.append(accuracy5)
+        accuracies.append(accuracy6)
+        accuracies.append(accuracy7)
+        accuracies.append(accuracy8)
+
         train_accuracy1 += accuracy1 / total_batch
         train_accuracy2 += accuracy2 / total_batch
         train_accuracy3 += accuracy3 / total_batch
@@ -188,6 +214,13 @@ for epoch in range(num_epochs):
         train_accuracy6 += accuracy6 / total_batch
         train_accuracy7 += accuracy7 / total_batch
         train_accuracy8 += accuracy8 / total_batch
+
+        # ============ TensorBoard logging ============#
+        # (1) Log the scalar values
+        for i, logger in enumerate(loggers):
+            logger.scalar_summary('Accuracies', accuracies[i], step + 1)
+
+        step += 1
 
     avg_accuracy1.append(train_accuracy1)
     avg_accuracy2.append(train_accuracy2)
